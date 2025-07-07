@@ -8,6 +8,7 @@
 #define GPIO_ENC_LEFT GPIO_NUM_16
 #define GPIO_ENC_RIGHT GPIO_NUM_17
 #define GPIO_ENC_BUTT GPIO_NUM_15
+#define TIME_LONG_PRESS 1e6
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -65,7 +66,7 @@ void gpioEncoderButtTask() {
         if (xQueueReceive(gpioEncButtQueue, &gpioNum, portMAX_DELAY)) {
             longPress = 0;
             while (gpio_get_level(GPIO_ENC_BUTT)) {
-                if ((esp_timer_get_time() - encoderButtonPressTime) > 1e6) {
+                if ((esp_timer_get_time() - encoderButtonPressTime) > TIME_LONG_PRESS) {
                     longPress = 1;
                     break;
                 }
